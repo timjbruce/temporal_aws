@@ -2,6 +2,35 @@
 
 This project deploys base AWS networking (VPC, Subnets) and compute infrastructure (EC2) using Temporal to manage the workflow.
 
+
+```mermaid
+graph TD
+    A["START: AWSVPCandEC2Workflow"] --> B["Input: region, cidr_block<br/>instance_type, operating_system"]
+    
+    B --> C["Create VPC<br/>execute_activity: create_vpc"]
+    C --> D["Await 5 seconds<br/>Watch progress in Web UI"]
+    
+    D --> E["Split CIDR Block<br/>into 2 subnets"]
+    E --> F{"For each<br/>subnet_cidr"}
+    
+    F --> G["Create Subnet<br/>execute_activity: create_subnet<br/>Loop through CIDR blocks"]
+    G --> H["Add subnet to list"]
+    H --> F
+    F -->|Done| I["Await 5 seconds<br/>Watch progress in Web UI"]
+    
+    I --> J["Create EC2 Instance<br/>in first subnet<br/>execute_activity: create_ec2_instance"]
+    
+    J --> K["Return Output:<br/>VPC ID, Subnet IDs<br/>Instance ID, Public IP"]
+    K --> L["END"]
+    
+    style A fill:#90EE90
+    style L fill:#FFB6C6
+    style C fill:#87CEEB
+    style G fill:#87CEEB
+    style J fill:#87CEEB
+
+```
+
 ## Usage
 
 `python starter.py <region> <cidr_block> <instance_type> <os>`
@@ -46,7 +75,7 @@ It is recommended to use the CLI short-term credentials for use with this soluti
 
 ### Happy Path
 
-The process starts by loading the credentials you have specified and attempting a login to AWS using these. Once logged in, the program will deploy a new VPC first. Once the VPC is deployed, it will create the 2 public subnets. 
+The process starts by loading the credentials you have specified and attempting a login to AWS using these. Once logged in, the workflow will deploy a new VPC first. Once the VPC is deployed, it will create the 2 public subnets, each using half of the CIDR block that is allocated for the VPC. 
 
 The EC2 instance will then be created using the latest AMI for either Windows or Amazon Linux 2.
 
