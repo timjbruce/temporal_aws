@@ -4,7 +4,7 @@ This project deploys base AWS networking (VPC, Subnets) and compute infrastructu
 
 ## Usage
 
-python run_worker.py <region> <cidr_block> <instance_type> <os>
+`python starter.py <region> <cidr_block> <instance_type> <os>`
 
 - `region`: AWS region to deploy the infrastructure. For example, us-east-1.
 
@@ -15,6 +15,10 @@ python run_worker.py <region> <cidr_block> <instance_type> <os>
 - `instance_type`: AWS Instance Type and Size, in the format of instance_type.size (e.g. t2.small).
 
 - `OS`: Operating system for instance, either windows (Windows) or amazonlinux2 (Amazon Linux 2).
+
+### Background Tasks
+
+A Temporal Development server needs to be running to receive these requests. To process requests, run `python worker.py`.
 
 ## AWS Support
 
