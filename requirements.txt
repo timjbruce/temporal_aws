@@ -1,0 +1,9 @@
+#boto3-stubs[full]
+#botocore-stubs[full]
+types-aioboto3
+types-aiobotocore
+temporalio
+ipaddress
+enum
+pytest
+moto
