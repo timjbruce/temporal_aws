@@ -11,6 +11,7 @@ async def main():
     # Create client connected to server at the given address
     client = await Client.connect("localhost:7233", namespace="default")
 
+    id = str(uuid4())
     # Execute a workflow
     input: AWSInfrastructureWorkflowInput = AWSInfrastructureWorkflowInput(
         region=sys.argv[1], 
@@ -22,7 +23,7 @@ async def main():
     handle = await client.start_workflow(
         AWSVPCandEC2Workflow.run,
         input,
-        id="testing-workflow",
+        id=id,
         task_queue=TASK_QUEUE_NAME,
     )
 
