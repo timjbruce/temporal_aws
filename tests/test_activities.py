@@ -93,7 +93,7 @@ async def test_create_subnet(vpc_creator, subnet_input, subnet_output):
             EC2InfoInput(
                 region="us-east-1", 
                 instance_type="t2.micro",
-                operating_system="linux",
+                operating_system="amazonlinux2",
                 subnet_id=""
             ),
             EC2InfoOutput(
